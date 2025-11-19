@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077986394972",
+    "project_id": "reading-challenge-2b07c",
+    "storage_bucket": "reading-challenge-2b07c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077986394972:android:c592541c9ceaac8949b799",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_final"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYETpnWDQ0uIN0g5tXUD75-k6FHAxx-A4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -35,8 +35,26 @@ class _HomePageState extends State<HomePage>
         
       ),
 
-      appBar: AppBar(
-        title: const Text('Lectura'),
+      body: ListView.builder(
+          padding: const EdgeInsets.all(8.0),
+          itemCount: 12,
+          itemBuilder: (BuildContext context, int index) 
+          {
+            return Card(
+              child: ListTile
+              (
+                leading: const Icon(Icons.book, color: Color.fromARGB(255, 119, 93, 20)),
+                title: Text('Book Title $index'),
+                subtitle: const Text('Author Name'),
+              ),
+            );
+          },
+
+          /*title: const Text('Books', 
+            style: TextStyle(color: Colors.black, 
+            fontWeight: FontWeight.bold)),*/
+
+        
       ),
     );
   }

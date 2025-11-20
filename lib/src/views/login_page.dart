@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage>
           setState(() => _isLoading = false);
           if (context.mounted) {
             Utils.showSnackBar(context: context, title: 'Bienvenido');
+            context.push('/home');
           }
         });
       }
@@ -109,7 +110,7 @@ class _LoginPageState extends State<LoginPage>
                 CustomTextField(
                   label: 'Contraseña',
                   hint: '••••••••',
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   controller: _passwordController,
                   prefixIcon: Icons.lock_outlined,
                   suffixIcon: _obscurePassword

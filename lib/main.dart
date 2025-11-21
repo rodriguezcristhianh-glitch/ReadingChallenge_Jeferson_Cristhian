@@ -38,7 +38,7 @@ class MainApp extends StatelessWidget
 
           if (user == null && !freeRoutes.contains(state.fullPath)) 
           {
-            return '/admin-book';
+            return '/login';
           }
 
           return null;

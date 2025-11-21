@@ -5,30 +5,39 @@ import 'package:proyecto_final/api/books.dart';
 import 'package:proyecto_final/src/shared/utils.dart';
 import 'package:proyecto_final/src/providers/book_provider.dart';
 
-class AdminTodoPage extends StatelessWidget 
+class AdminTodoPage extends StatefulWidget 
 {
   AdminTodoPage({super.key, this.book});
 
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final FocusNode titleFocus = FocusNode();
-  final bookProvider = BookProvider();
   final Map<String, dynamic>? book;
+
+  @override
+  State<AdminTodoPage> createState() => _AdminTodoPageState();
+}
+
+class _AdminTodoPageState extends State<AdminTodoPage> {
+  final titleController = TextEditingController();
+
+  final descriptionController = TextEditingController();
+
+  final FocusNode titleFocus = FocusNode();
+
+  final bookProvider = BookProvider();
 
   @override
   Widget build(BuildContext context) {
     //Id que me permite consultar a la BBDD la información actualziada
     final bookId = GoRouterState.of(context).pathParameters['id'];
 
-    if (book != null) {
-      titleController.text = book!['title'];
-      descriptionController.text = book!['description'];
+    if (widget.book != null) {
+      titleController.text = widget.book!['title'];
+      descriptionController.text = widget.book!['description'];
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          book == null
+          widget.book == null
               ? 'Agregando nuevo libro'
               : 'Editando el progreso del libro # $bookId',
         ),
@@ -59,6 +68,18 @@ class AdminTodoPage extends StatelessWidget
               obscureText: false,
               keyboardType: TextInputType.visiblePassword,
               // style: TextStyle(color: Colors.red),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: titleController,
+              maxLines: 1,
+              decoration: InputDecoration(
+                label: Text('Autor'),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                prefixIcon: Icon(Icons.person),
+                ),
             ),
             SizedBox(height: 16),
             TextField(

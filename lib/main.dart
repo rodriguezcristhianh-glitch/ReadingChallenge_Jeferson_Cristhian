@@ -6,6 +6,7 @@ import 'package:proyecto_final/src/views/login_page.dart';
 import 'package:proyecto_final/src/views/home_page.dart';
 import 'package:proyecto_final/src/views/stadistics.dart';
 import 'firebase_options.dart';
+import 'package:proyecto_final/src/views/admin_book_page.dart';
 
 void main() async 
 {
@@ -37,7 +38,7 @@ class MainApp extends StatelessWidget
 
           if (user == null && !freeRoutes.contains(state.fullPath)) 
           {
-            return '/login';
+            return '/admin-book';
           }
 
           return null;
@@ -52,6 +53,7 @@ class MainApp extends StatelessWidget
           )),
           GoRoute(path: '/home', name: 'home', builder: (context, state) => HomePage()),
           GoRoute(path: '/stadistics', name: 'statistics', builder: (context, state) => Stadistics()),
+          GoRoute(path: '/admin-book', name: 'admin-book', builder: (context, state) => AdminTodoPage()),
         ]
       ),
       debugShowCheckedModeBanner: false,

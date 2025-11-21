@@ -42,22 +42,35 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
               : 'Editando el progreso del libro # $bookId',
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView (
         padding: EdgeInsetsGeometry.symmetric(vertical: 8, horizontal: 16),
         
         child: Column(
           children: [
-            Image(image: NetworkImage("https://i.pinimg.com/736x/d1/d9/ba/d1d9ba37625f9a1210a432731e1754f3.jpg")),
-            FloatingActionButton(onPressed: (){
+            //codigo donde hacemos stack el floating action button con el Image
+            Stack(
+              children: [
+                Image(image: NetworkImage("https://i.pinimg.com/736x/d1/d9/ba/d1d9ba37625f9a1210a432731e1754f3.jpg")),
+                Positioned(
+                  bottom: 10,
+                  left: 150,
 
-            },
-            foregroundColor: Colors.black,
-            backgroundColor:Colors.white, 
+                  child: 
+                  FloatingActionButton(onPressed: (){
 
-            child: Icon(Icons.add_photo_alternate),
+                      },
+                      foregroundColor: Colors.black,
+                      backgroundColor:Colors.white, 
+
+                      child: Icon(Icons.add_photo_alternate),
             
             
             ),
+                )
+              ],
+
+            ),
+            
             SizedBox(height: 16),
             TextField(
               focusNode: titleFocus,

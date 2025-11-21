@@ -18,7 +18,8 @@ class AdminTodoPage extends StatefulWidget
 class _AdminTodoPageState extends State<AdminTodoPage> {
   final titleController = TextEditingController();
 
-  final descriptionController = TextEditingController();
+  final autorController = TextEditingController();
+  final estadoController = TextEditingController();
 
   final FocusNode titleFocus = FocusNode();
 
@@ -29,9 +30,21 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
     //Id que me permite consultar a la BBDD la información actualziada
     final bookId = GoRouterState.of(context).pathParameters['id'];
 
+    //Lista de Estados
+    final List<String>_listEstado = ['Pendiente', 'Finalizado','En progreso'];
+    String? _selectedEstado;
+    List<DropdownMenuItem<String>> _buildDropdownMenuItems() {
+      return _listEstado.map((String estado) {
+        return DropdownMenuItem<String>(
+          value: estado,
+          child: Text(estado),
+        );
+      }).toList();
+    }
+
     if (widget.book != null) {
       titleController.text = widget.book!['title'];
-      descriptionController.text = widget.book!['description'];
+      autorController.text = widget.book!['autor'];
     }
 
     return Scaffold(
@@ -97,7 +110,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
             ),
             SizedBox(height: 16),
             TextField(
-              controller: titleController,
+              controller: autorController,
               maxLines: 1,
               decoration: InputDecoration(
                 label: Text('Autor'),
@@ -108,11 +121,28 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                 ),
             ),
             SizedBox(height: 16),
-            TextField(
-              controller: descriptionController,
-              maxLines: 4,
-              decoration: InputDecoration(label: Text('Descripción')),
-            ),
+
+            //Implementacion del DropdownButtonFormField para la seleccion de estados.
+            DropdownButtonFormField<String>(
+                initialValue: _selectedEstado, 
+                items: _buildDropdownMenuItems(), 
+                onChanged: (String? newValue) {
+                      setState(() {
+                      _selectedEstado = newValue; 
+                });
+                },
+                    decoration: InputDecoration(
+                      labelText: 'Estado', 
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.update_rounded), 
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Porfavor selecciona un Estado'; // Optional validation
+                      }
+                      return null;
+                    },
+    )
             
           ],
         ),
@@ -142,7 +172,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
 
           final Map<String, dynamic> newTodo = {
             'title': titleController.text,
-            'description': descriptionController.text,
+            'autor': autorController.text,
             'completed': false,
             'user': FirebaseAuth.instance.currentUser?.uid,
           };
@@ -187,7 +217,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
           );
 
           titleController.text = '';
-          descriptionController.text = '';
+          autorController.text = '';
 
           context.pop();
         },

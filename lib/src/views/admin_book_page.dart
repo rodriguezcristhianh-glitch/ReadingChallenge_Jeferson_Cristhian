@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:proyecto_final/api/books.dart';
@@ -167,6 +168,9 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                     TextField(
                       controller: paginasLeidasController,
                       maxLines: 1,
+                      //Teclado  numerico y no aceptara caracteres especiales.
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         label: Text('Paginas Leidas'),
                         border: OutlineInputBorder(
@@ -179,6 +183,8 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                     TextField(
                       controller: paginasTotalesController,
                       maxLines: 1,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         label: Text('Paginas Totales'),
                         border: OutlineInputBorder(

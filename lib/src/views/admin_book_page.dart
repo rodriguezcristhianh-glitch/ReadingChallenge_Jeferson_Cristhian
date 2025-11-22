@@ -170,7 +170,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                       maxLines: 1,
                       //Teclado  numerico y no aceptara caracteres especiales.
                       keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
                       decoration: InputDecoration(
                         label: Text('Paginas Leidas'),
                         border: OutlineInputBorder(
@@ -184,7 +184,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                       controller: paginasTotalesController,
                       maxLines: 1,
                       keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
                       decoration: InputDecoration(
                         label: Text('Paginas Totales'),
                         border: OutlineInputBorder(
@@ -216,9 +216,47 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
               title: "El titulo es obligatorio",
               color: Colors.red,
             );
+            
 
             return;
           }
+          if (autorController.text.isEmpty) {
+           
+
+            Utils.showSnackBar(
+              context: context,
+              title: "El Autor es obligatorio",
+              color: Colors.red,
+            );
+            
+
+            return;
+          }
+          if (paginasLeidasController.text.isEmpty) {
+           
+
+            Utils.showSnackBar(
+              context: context,
+              title: "Especifica las Paginas Leidas",
+              color: Colors.red,
+            );
+            
+
+            return;
+          }
+          if (paginasTotalesController.text.isEmpty) {
+           
+
+            Utils.showSnackBar(
+              context: context,
+              title: "Especifica el Total de Paginas",
+              color: Colors.red,
+            );
+            
+
+            return;
+          }
+          
 
           final Map<String, dynamic> newTodo = {
             'title': titleController.text,

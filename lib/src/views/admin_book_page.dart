@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:proyecto_final/api/books.dart';
 import 'package:proyecto_final/src/shared/utils.dart';
 import 'package:proyecto_final/src/providers/book_provider.dart';
@@ -20,10 +23,22 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
 
   final autorController = TextEditingController();
   final estadoController = TextEditingController();
+  final paginasLeidasController = TextEditingController();
+  final paginasTotalesController = TextEditingController();
 
   final FocusNode titleFocus = FocusNode();
 
   final bookProvider = BookProvider();
+  File? _image;
+  //image picker
+  final _picker = ImagePicker();
+  pickImage()async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if(pickedFile != null){
+      _image = File(pickedFile.path);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,27 +76,29 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
         child: Column(
           children: [
             //codigo donde hacemos stack el floating action button con el Image
-            Stack(
+           Stack(
               children: [
-                Image(image: NetworkImage("https://i.pinimg.com/736x/d1/d9/ba/d1d9ba37625f9a1210a432731e1754f3.jpg")),
+                SizedBox(
+                  width: 400, // Personaliza el ancho
+                  height: 300, // Personaliza el alto
+                  child: Image(
+                    image: NetworkImage("https://i.pinimg.com/736x/d1/d9/ba/d1d9ba37625f9a1210a432731e1754f3.jpg"),
+                    fit: BoxFit.cover, // Ajusta la imagen al espacio
+                  ),
+                ),
                 Positioned(
                   bottom: 10,
                   left: 150,
-
-                  child: 
-                  FloatingActionButton(onPressed: (){
-
-                      },
-                      foregroundColor: Colors.black,
-                      backgroundColor:Colors.white, 
-
-                      child: Icon(Icons.add_photo_alternate),
-            
-            
-            ),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      pickImage();
+                    },
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.add_photo_alternate),
+                  ),
                 )
               ],
-
             ),
             
             SizedBox(height: 16),
@@ -134,7 +151,7 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                     decoration: InputDecoration(
                       labelText: 'Estado', 
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.update_rounded), 
+                      prefixIcon: Icon(Icons.check_box), 
                     ),
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
@@ -142,11 +159,35 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                       }
                       return null;
                     },
-    )
-            
-          ],
+            ),
+            SizedBox(height: 16),
+                    TextField(
+                      controller: paginasLeidasController,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        label: Text('Paginas Leidas'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.menu_book),
+                        ),
+                    ),
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: paginasTotalesController,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        label: Text('Paginas Totales'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.menu_book),
+                        ),
+                    ),
+                    
+                  ],
+                ),
         ),
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue[300],
         onPressed: () async {

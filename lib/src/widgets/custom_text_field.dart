@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomTextField extends StatefulWidget 
+{
   final String label;
   final String? hint;
   final TextInputType keyboardType;
@@ -42,13 +43,25 @@ class CustomTextField extends StatefulWidget {
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomTextFieldState extends State<CustomTextField> 
+{
   late bool _obscureText;
 
   @override
   void initState() {
     super.initState();
     _obscureText = widget.obscureText;
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomTextField oldWidget)
+  {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.obscureText != oldWidget.obscureText) 
+    {
+      _obscureText = widget.obscureText;
+    }
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,19 +8,19 @@ import 'package:proyecto_final/api/books.dart';
 import 'package:proyecto_final/src/shared/utils.dart';
 import 'package:proyecto_final/src/providers/book_provider.dart';
 
-class AdminTodoPage extends StatefulWidget 
+class AdminBookPage extends StatefulWidget 
 {
-  AdminTodoPage({super.key, this.book});
+  AdminBookPage({super.key, this.book});
 
   final Map<String, dynamic>? book;
 
   @override
-  State<AdminTodoPage> createState() => _AdminTodoPageState();
+  State<AdminBookPage> createState() => _AdminTodoPageState();
 }
 
-class _AdminTodoPageState extends State<AdminTodoPage> {
+class _AdminTodoPageState extends State<AdminBookPage> 
+{
   final titleController = TextEditingController();
-
   final autorController = TextEditingController();
   final estadoController = TextEditingController();
   final paginasLeidasController = TextEditingController();
@@ -33,26 +32,33 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
   File? _image;
   //image picker
   final _picker = ImagePicker();
-  pickImage()async {
+
+  pickImage()async 
+  {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-  }
+    if (pickedFile != null) 
+    {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
 
 
   @override
-  Widget build(BuildContext context) {
-    //Id que me permite consultar a la BBDD la información actualziada
+  Widget build(BuildContext context) 
+  {
+    //Id que me permite consultar a la BBDD la información actualizada
     final bookId = GoRouterState.of(context).pathParameters['id'];
 
     //Lista de Estados
     final List<String>_listEstado = ['Pendiente', 'Finalizado','En progreso'];
     String? _selectedEstado;
-    List<DropdownMenuItem<String>> _buildDropdownMenuItems() {
-      return _listEstado.map((String estado) {
+
+    List<DropdownMenuItem<String>> _buildDropdownMenuItems() 
+    {
+      return _listEstado.map((String estado) 
+      {
         return DropdownMenuItem<String>(
           value: estado,
           child: Text(estado),
@@ -65,15 +71,18 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
       autorController.text = widget.book!['autor'];
     }
 
-    return Scaffold(
-      appBar: AppBar(
+    return Scaffold
+    (
+      appBar: AppBar
+      (
         title: Text(
           widget.book == null
               ? 'Agregando nuevo libro'
               : 'Editando el progreso del libro # $bookId',
         ),
       ),
-      body: SingleChildScrollView (
+      body: SingleChildScrollView 
+      (
         padding: EdgeInsetsGeometry.symmetric(vertical: 8, horizontal: 16),
         
         child: Column(
@@ -196,11 +205,14 @@ class _AdminTodoPageState extends State<AdminTodoPage> {
                     
                   ],
                 ),
-        ),
-      floatingActionButton: FloatingActionButton(
+      ),
+      floatingActionButton: FloatingActionButton
+      (
+        heroTag: 'tag_agregar_libro',
         backgroundColor: Colors.blue[300],
         onPressed: () async {
-          if (titleController.text.isEmpty) {
+          if (titleController.text.isEmpty) 
+          {
             // ScaffoldMessenger.of(context).showSnackBar(
             //   SnackBar(
             //     content: Text(

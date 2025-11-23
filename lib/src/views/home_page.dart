@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final/src/providers/book_provider.dart';
 import 'package:proyecto_final/src/widgets/LinearProgress.dart';
-import 'package:proyecto_final/src/views/admin_book_page.dart';
+//import 'package:proyecto_final/src/views/admin_book_page.dart';
+//import 'package:proyecto_final/src/models/book.dart';
+//import 'package:proyecto_final/src/shared/utils.dart';
+//import 'package:proyecto_final/src/widgets/item_list.dart';
 
 class HomePage extends StatefulWidget 
 {
@@ -151,75 +154,6 @@ class _HomePageState extends State<HomePage>
         shadowColor: Color(0xFFE5E5E5),
       ),
 
-      body: GridView.count
-      (
-        crossAxisCount: 2,
-        padding: const EdgeInsets.all(16.0),
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        children: List.generate(12, (index) 
-        {
-          return GestureDetector
-          (
-            onTap: () 
-            {
-              // Acción al tocar la tarjeta
-              // 1. Navegar a la pagina de detalles del libro y mostrar el cronometro
-            },
-            child: Card
-            (
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column
-              (
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: 
-                [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image(image: AssetImage('assets/maestria_cover.webp'), width: 80, height: 80,),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded))
-                    ]),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    //mainAxisAlignment: MainAxisAlignment.center,
-
-                    children: [
-                      Text('Book ${index + 1}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 3),
-                      Text('Author Name', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-
-                      Row(
-                        children: [
-                          Text('Progress'),
-                          SizedBox(width: 20),
-                          
-                          Column(
-                            children: [
-                              Text('110/220'),
-                              LinearProgres(value: 220, min: 1, width: 80, heightBar: 1),
-                            ],
-                          )
-                        ],
-                      ),
-                      
-                    ],
-                  ),
-                  //Icon(Icons.book, size: 50, color: Colors.blueAccent),
-                  
-                ],
-              ),
-            ),
-          );
-        }),
-      ),
-
-/*
       body: StreamBuilder
       (
         stream: bookProvider.getAllBooksStream(), 
@@ -229,123 +163,84 @@ class _HomePageState extends State<HomePage>
           {
             return Center(child: CircularProgressIndicator());
           }
-
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No hay libros registrados aún.'));
           }
-
           if (snapshot.hasError) 
           {
             return Center(child: Text('Error: ${snapshot.error.toString()}'));
           }
 
-          final List<Book> books = snapshot.data!;
+          final books = snapshot.data ?? [];
 
-          return ListView.builder(
-            itemCount: books.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Dismissible(
-                confirmDismiss: (direction) async {
-                  //? Para actualizar
-                  if (direction == DismissDirection.endToStart) {
-                    context.pushNamed(
-                      'update-book',
-                      pathParameters: {'id': books[index].id},
-                      extra: books[index],
-                    );
-                    return false;
-                  }
+          return GridView.count(
+            crossAxisCount: 2,
+            padding: const EdgeInsets.all(16.0),
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
 
-                  //? Para eliminar
-                  return await Utils.showConfirm(
-                    context: context,
-                    confirmButton: () 
-                    {
-                      FirebaseFirestore.instance
-                          .collection('books')
-                          .doc(books[index].id)
-                          .delete();
-
-                      if (!context.mounted) return;
-                      context.pop(books.remove(books[index]));
-                    },
-                  );
+            children: List.generate(books.length, (index)
+            {
+              return GestureDetector
+              (
+                onTap: () 
+                {
+                  // Acción al tocar la tarjeta
+                  // 1. Navegar a la pagina de detalles del libro y mostrar el cronometro
                 },
-                onDismissed: (direction) {
-                  print(direction);
-                },
-                background: Container(
-                  padding: EdgeInsets.only(left: 16),
-                  color: Colors.red,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.delete_outline_rounded,
-                      color: Colors.red[50],
-                      size: 30,
-                    ),
+                child: Card
+                (
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ),
-                secondaryBackground: Container(
-                  padding: EdgeInsets.only(right: 16),
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Modificar',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue[50],
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Icon(
-                        Icons.edit_outlined,
-                        color: Colors.blue[50],
-                        size: 30,
+                  child: Column
+                  (
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: 
+                    [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image(image: AssetImage('assets/maestria_cover.webp'), width: 80, height: 80,),
+                          IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded))
+                        ]),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        //mainAxisAlignment: MainAxisAlignment.center,
+
+                        children: [
+                          Text('${books[index].title}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 3),
+                          Text('${books[index].author}', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+
+                          Row(
+                            children: [
+                              Text('Progress'),
+                              SizedBox(width: 20),
+                              
+                              Column
+                              (
+                                children: 
+                                [
+                                  Text('${books[index].currentPage}/${books[index].totalPages}'),
+                                  LinearProgres(value: 220, min: 1, width: 80, heightBar: 1),
+                                ],
+                              )
+                            ],
+                          ),
+                          
+                        ],
                       ),
                     ],
                   ),
                 ),
-
-                key: Key(books[index].id),
-                child:  ItemList(book: books[index]),
               );
-            },
+            })
           );
-
-          // información de todo lo que ocurre con el future
-        },
-      ),
-*/
-
-
-
-/*
-          padding: const EdgeInsets.all(8.0),
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) 
-          {
-            return Card(
-              child: ListTile
-              (
-                leading: Image(image: AssetImage('assets/maestria_cover.webp'), width: 100, height: 100,),
-                //const Icon(Icons.book_sharp, color: Color.fromARGB(255, 97, 77, 23)),
-                title: Text('Book Title ${index+1}', 
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                subtitle: const Text('Author Name'),
-                trailing: const Icon(Icons.linear_scale, fill: 0.2, grade: 0.6,),
-              ),
-            );
-          });
-        },
-      ),*/
-      /*
-      body: ,*/
-
-      
+      }),
 
       floatingActionButton: FloatingActionButton
       (

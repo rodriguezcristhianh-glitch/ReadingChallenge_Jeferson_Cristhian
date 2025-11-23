@@ -51,6 +51,8 @@ class _AdminTodoPageState extends State<AdminBookPage>
     //Id que me permite consultar a la BBDD la información actualizada
     final bookId = GoRouterState.of(context).pathParameters['id'];
 
+    
+
     //Lista de Estados
     final List<String>_listEstado = ['Pendiente', 'Finalizado','En progreso'];
     String? _selectedEstado;
@@ -210,7 +212,8 @@ class _AdminTodoPageState extends State<AdminBookPage>
       (
         heroTag: 'tag_agregar_libro',
         backgroundColor: Colors.blue[300],
-        onPressed: () async {
+        onPressed: () async 
+        {
           if (titleController.text.isEmpty) 
           {
             // ScaffoldMessenger.of(context).showSnackBar(
@@ -228,67 +231,61 @@ class _AdminTodoPageState extends State<AdminBookPage>
               title: "El titulo es obligatorio",
               color: Colors.red,
             );
-            
 
             return;
           }
-          if (autorController.text.isEmpty) {
-           
-
+          if (autorController.text.isEmpty) 
+          {
             Utils.showSnackBar(
               context: context,
               title: "El Autor es obligatorio",
               color: Colors.red,
             );
-            
 
             return;
           }
-          if (paginasLeidasController.text.isEmpty) {
-           
-
+          if (paginasLeidasController.text.isEmpty) 
+          {
             Utils.showSnackBar(
               context: context,
               title: "Especifica las Paginas Leidas",
               color: Colors.red,
             );
-            
 
             return;
           }
-          if (paginasTotalesController.text.isEmpty) {
-           
-
+          if (paginasTotalesController.text.isEmpty) 
+          {
             Utils.showSnackBar(
               context: context,
               title: "Especifica el Total de Paginas",
               color: Colors.red,
             );
             
-
             return;
           }
-          
 
-          final Map<String, dynamic> newTodo = {
+          final Map<String, dynamic> newBook = 
+          {
             'title': titleController.text,
-            'autor': autorController.text,
-            'completed': false,
+            'author': autorController.text,
+            'cover': 'sa',
+            'status': 'Pendiente',
+            'currentPage': int.parse(paginasLeidasController.text),
+            'totalPages': int.parse(paginasTotalesController.text),
             'user': FirebaseAuth.instance.currentUser?.uid,
           };
 
-          if (bookId == null) {
-            // todoList.add(newTodo);
-            // mostrar icono de carga
-            await bookProvider.saveBook(newTodo);
+          if (bookId == null) 
+          {
+            print("Se creara un nuevo libro");
+            await bookProvider.saveBook(newBook);
+          } 
+          else 
+          {
+            final indice = booksList.indexWhere((book) => book['id'].toString() == bookId);
 
-            // ocultar icono de carga
-          } else {
-            final indice = booksList.indexWhere(
-              (todo) => todo['id'].toString() == bookId,
-            );
-
-            booksList[indice] = newTodo;
+            booksList[indice] = newBook;
           }
 
           // final snackBar = SnackBar(
